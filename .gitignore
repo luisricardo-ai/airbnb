@@ -1,2 +1,6 @@
 logs/
 .venv/
+
+airbnb/package-lock.yml
+airbnb/target/
+airbnb/dbt_packages/
