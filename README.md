@@ -118,11 +118,5 @@ FIELD_OPTIONALLY_ENCLOSED_BY = '"');
 ```
 
 ---
-## ToDo
-[X] - DBT Setup
-[] - Implement Models
-[] - Implement Materializations
-[] - Implement Seeds and Sources
-
-[] - Implement task to wip snowflake
-[] - Implement task to setup snowflake (user creation and data import)
+### Data Flow Progress
+![DataFlowProgress](/img/data_flow_progress.png)
