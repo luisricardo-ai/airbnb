@@ -119,7 +119,7 @@ FIELD_OPTIONALLY_ENCLOSED_BY = '"');
 
 ---
 ## ToDo
-[] - DBT Setup
+[X] - DBT Setup
 [] - Implement Models
 [] - Implement Materializations
 [] - Implement Seeds and Sources
