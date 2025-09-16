@@ -116,3 +116,7 @@ from 's3://dbtlearn/hosts.csv'
 FILE_FORMAT = (type = 'CSV' skip_header = 1
 FIELD_OPTIONALLY_ENCLOSED_BY = '"');
 ```
+
+---
+### Data Flow Progress
+![DataFlowProgress](/img/data_flow_progress.png)
