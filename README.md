@@ -116,3 +116,13 @@ from 's3://dbtlearn/hosts.csv'
 FILE_FORMAT = (type = 'CSV' skip_header = 1
 FIELD_OPTIONALLY_ENCLOSED_BY = '"');
 ```
+
+---
+## ToDo
+[] - DBT Setup
+[] - Implement Models
+[] - Implement Materializations
+[] - Implement Seeds and Sources
+
+[] - Implement task to wip snowflake
+[] - Implement task to setup snowflake (user creation and data import)
