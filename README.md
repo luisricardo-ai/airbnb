@@ -2,120 +2,62 @@
 
 Simulating the life of an Analytics Engineer in Airbnb
 
-## Snowflake user creation
-Copy these SQL statements into a Snowflake Worksheet, select all and execute them.
+## Prerequisites
+Make sure to create a snowflake account with free credentials :)
 
-```sql
--- Use an admin role
-USE ROLE ACCOUNTADMIN;
+To run this project have the following installed:
+* [Pyenv](https://github.com/pyenv/pyenv)
+* [Poetry](https://python-poetry.org)
 
--- Create the `transform` role
-CREATE ROLE IF NOT EXISTS TRANSFORM;
-GRANT ROLE TRANSFORM TO ROLE ACCOUNTADMIN;
-
--- Create the default warehouse if necessary
-CREATE WAREHOUSE IF NOT EXISTS COMPUTE_WH;
-GRANT OPERATE ON WAREHOUSE COMPUTE_WH TO ROLE TRANSFORM;
-
--- Create the `dbt` user and assign to role
-CREATE USER IF NOT EXISTS dbt
-  PASSWORD='dbtPassword123'
-  LOGIN_NAME='dbt'
-  MUST_CHANGE_PASSWORD=FALSE
-  DEFAULT_WAREHOUSE='COMPUTE_WH'
-  DEFAULT_ROLE=TRANSFORM
-  DEFAULT_NAMESPACE='AIRBNB.RAW'
-  COMMENT='DBT user used for data transformation';
-ALTER USER dbt SET TYPE = LEGACY_SERVICE;
-GRANT ROLE TRANSFORM to USER dbt;
-
--- Create our database and schemas
-CREATE DATABASE IF NOT EXISTS AIRBNB;
-CREATE SCHEMA IF NOT EXISTS AIRBNB.RAW;
-
--- Set up permissions to role `transform`
-GRANT ALL ON WAREHOUSE COMPUTE_WH TO ROLE TRANSFORM; 
-GRANT ALL ON DATABASE AIRBNB to ROLE TRANSFORM;
-GRANT ALL ON ALL SCHEMAS IN DATABASE AIRBNB to ROLE TRANSFORM;
-GRANT ALL ON FUTURE SCHEMAS IN DATABASE AIRBNB to ROLE TRANSFORM;
-GRANT ALL ON ALL TABLES IN SCHEMA AIRBNB.RAW to ROLE TRANSFORM;
-GRANT ALL ON FUTURE TABLES IN SCHEMA AIRBNB.RAW to ROLE TRANSFORM;
+## Installation
+1. Clone 
+```sh
+   git clone https://github.com/luisricardo-ai/airbnb.git
 ```
+
+2. Use the right version of Python for this project
+```sh
+    pyenv install 3.11
+    pyenv local 3.11
+```
+
+3. Virtual Enviroment
+```sh
+    poetry env use $(pyenv which python)
+    poetry env activate
+```
+
+4. Install dependencies
+```sh
+    poetry install
+```
+
+## How to run?
+
+### Credentials
+
+Take a look at `.env-example` and create a `.env` with your snowflake' credentials. 
+
+The easiest way to get your **SNOWFLAKE_ACCOUNT** it's from the registration email that you received, go there and copy and paste the string before `.snowflakecomputing.com`. For example `abcde-fg123456` and keep in mind that sometimes urls include the `.aws` tag, too, such as `abcde-fg123456.aws`
+
+https://docs.getdbt.com/docs/cloud/connect-data-platform/connect-snowflake
+
+Use the `profile.yml` example to copy and paste the content at your local `~/.dbt/profile.yml`. Make sure to use **YOUR_SNOWFLAKE_ACCOUNT**
+
 ---
-### Snowflake data import
-Copy these SQL statements into a Snowflake Worksheet, select all and execute them (i.e. pressing the play button).
+### Creating snowflake user and database
+To create the structure for snowflake you can run the code below. If you want to check the commands running behind the scenes, check the `app` folder
 
-```sql
--- Set up the defaults
-USE WAREHOUSE COMPUTE_WH;
-USE DATABASE airbnb;
-USE SCHEMA RAW;
-
--- Create our three tables and import the data from S3
-CREATE OR REPLACE TABLE raw_listings(
-    id integer,
-    listing_url string,
-    name string,
-    room_type string,
-    minimum_nights integer,
-    host_id integer,
-    price string,
-    created_at datetime,
-    updated_at datetime
-);
-                    
-COPY INTO raw_listings (
-    id,
-    listing_url,
-    name,
-    room_type,
-    minimum_nights,
-    host_id,
-    price,
-    created_at,
-    updated_at)
-from 's3://dbtlearn/listings.csv'
-FILE_FORMAT = (type = 'CSV' skip_header = 1
-FIELD_OPTIONALLY_ENCLOSED_BY = '"');
-                    
-
-CREATE OR REPLACE TABLE raw_reviews(
-    listing_id integer,
-    date datetime,
-    reviewer_name string,
-    comments string,
-    sentiment string
-);
-                    
-COPY INTO raw_reviews (
-    listing_id, 
-    date, 
-    reviewer_name, 
-    comments, 
-    sentiment)
-from 's3://dbtlearn/reviews.csv'
-FILE_FORMAT = (type = 'CSV' skip_header = 1
-FIELD_OPTIONALLY_ENCLOSED_BY = '"');
-                    
-
-CREATE OR REPLACE TABLE raw_hosts(
-    id integer,
-    name string,
-    is_superhost string,
-    created_at datetime,
-    updated_at datetime
-);
-                    
-COPY INTO raw_hosts (
-    id, 
-    name, 
-    is_superhost, 
-    created_at, 
-    updated_at)
-from 's3://dbtlearn/hosts.csv'
-FILE_FORMAT = (type = 'CSV' skip_header = 1
-FIELD_OPTIONALLY_ENCLOSED_BY = '"');
+```cli
+task create-snowflake
 ```
+
+If you want to delete all the snowflake structure, run this.
+
+```cli
+task drop-snowflake
+```
+
 
 ---
 ### Data Flow Progress

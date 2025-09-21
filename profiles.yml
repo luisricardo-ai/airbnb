@@ -1,0 +1,13 @@
+airbnb:
+  outputs:
+    dev:
+      account: YOUR_SNOWFLAKE_ACCOUNT
+      database: AIRBNB
+      password: dbtPassword123
+      role: transform
+      schema: DEV
+      threads: 4
+      type: snowflake
+      user: dbt
+      warehouse: COMPUTE_WH
+  target: dev
