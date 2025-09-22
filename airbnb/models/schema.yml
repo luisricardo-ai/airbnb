@@ -13,15 +13,17 @@ models:
       - name: host_id
         description: The hosts's id. References the host table.
         tests:
-          - not_null
           - relationships:
-              to: ref('dim_hosts_cleansed')
-              field: host_id
+             arguments:
+               to: ref('dim_hosts_cleansed')
+               field: host_id
+          - not_null
 
       - name: room_type
         description: Type of the apartment / room
         tests:
           - accepted_values:
+             arguments:
               values: ['Entire home/apt', 'Private room', 'Shared room', 'Hotel room']
 
       - name: minimum_nights
@@ -42,15 +44,17 @@ models:
       - name: is_superhost
         tests:
           - accepted_values:
-              values: ['t', 'f']
+             arguments:
+               values: ['t', 'f']
   
   - name: fct_reviews
     columns:
       - name: listing_id
         tests:
           - relationships:
-              to: ref('dim_listings_cleansed')
-              field: listing_id
+             arguments:
+               to: ref('dim_listings_cleansed')
+               field: listing_id
 
       - name: reviewer_name
         tests:
@@ -59,4 +63,5 @@ models:
       - name: review_sentiment
         tests:
           - accepted_values:
-              values: ['positive', 'neutral', 'negative']
+             arguments:
+               values: ['positive', 'neutral', 'negative']
