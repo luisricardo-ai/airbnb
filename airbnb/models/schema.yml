@@ -44,6 +44,7 @@ models:
       
       - name: is_superhost
         tests:
+          - not_null
           - accepted_values:
              arguments:
                values: ['t', 'f']
