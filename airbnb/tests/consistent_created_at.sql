@@ -1,4 +1,4 @@
-SELECT *
+SELECT L.LISTING_ID, R.REVIEW_DATE
 FROM {{ ref('fct_reviews') }} AS R
 INNER JOIN {{ ref('dim_listings_cleansed') }} AS L
     ON R.LISTING_ID = L.LISTING_ID
