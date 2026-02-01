@@ -4,7 +4,7 @@ WITH raw_reviews AS (
 )
 SELECT
     listing_id,
-    'date' AS reviews_date,
+    date AS reviews_date,
     reviewer_name,
     comments AS review_text,
     sentiment AS review_sentiment
