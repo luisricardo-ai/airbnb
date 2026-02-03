@@ -12,7 +12,7 @@ WITH src_reviews AS (
 )
 SELECT
     listing_id,
-    reviews_date,
+    review_date,
     reviewer_name,
     review_text,
     review_sentiment
@@ -21,5 +21,5 @@ FROM
 WHERE
     review_text IS NOT NULL
 {% if is_incremental() %}
-  AND reviews_date > (SELECT MAX(reviews_date) FROM {{ this }})
+  AND review_date > (SELECT MAX(review_date) FROM {{ this }})
 {% endif %}
