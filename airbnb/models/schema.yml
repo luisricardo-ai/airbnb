@@ -9,11 +9,13 @@ models:
 
     columns:
      - name: listing_id
+       description: Primary key for the listing.
        data_tests:
          - unique
          - not_null
 
      - name: host_id
+       description: The host's id. References the host table.
        data_tests:
          - not_null
          - relationships:
